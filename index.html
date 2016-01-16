@@ -1,0 +1,77 @@
+<html ng-app="recApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>REC Schedule</title>
+  <link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container" ng-controller="ScheduleController">
+    <div class="row">
+      <div class="col-xs-12">
+        <h3 class="btn-group" role="toolbar">
+          <label class="btn btn-primary" ng-repeat="sport in sportFilter" ng-model="$parent.selectedSport" uib-btn-radio="sport.key"><img class="sport-filter" id="{{sport.key}}" src="img/{{sport.key}}.svg" ng-if="$index > 0"></img><div ng-if="$index==0">{{sport.label}}</div></label>
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-xs-12">
+        <h3>Today <small>{{todayDay}}</small></h3>
+        <div class="event" ng-repeat="event in events | today | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
+          <div class="event-title">
+            <span class="event-info" ng-hide="event.allday">{{event | eventStartTime}}</span>
+            <span class="sport" ng-class="{'past-event':isPastEvent(event)}">{{event.sport}}</span>
+            <small>
+              <span class="label label-warning" ng-show="eventStarted(event)">Ends {{timeRemaining(event)}}</span>
+              <span class="label label-info" ng-show="isFutureEvent(event)">Starts {{timeUntil(event)}}</span>
+            </small>
+            <a ng-href="{{getCalEntryUrl(event)}}" title="Add to Google Calendar" target="_blank"><i class="fa fa-calendar-plus-o"></i></a>
+          </div>
+          <div class="event-description event-info">
+            <i class="fa fa-clock-o"></i> {{event.duration}} <i class="fa fa-map-marker" ng-show="event.room"></i> {{event.room}}
+          </div>
+        </div>
+        <h3>Tomorrow <small>{{tomorrowDay}}</small></h3>
+        <div class="event" ng-repeat="event in events | tomorrow | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
+          <div class="event-title">
+            <span class="event-info" ng-hide="event.allday">{{event | eventStartTime}}</span>
+            <span class="sport">{{event.sport}}</span>
+            <a ng-href="{{getCalEntryUrl(event)}}" title="Add to Google Calendar" target="_blank"><i class="fa fa-calendar-plus-o"></i></a>
+          </div>
+          <div class="event-description event-info">
+            <i class="fa fa-clock-o"></i> {{event.duration}} <i class="fa fa-map-marker" ng-show="event.room"></i> {{event.room}}
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xs-12">
+        <h3>Rest of the week</h3>
+        <div class="event" ng-repeat="event in events | future | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
+          <div class="event-info">{{event | eventStartTime}} <i class="fa fa-clock-o"></i> {{event.duration}}
+            <a ng-href="{{getCalEntryUrl(event)}}" title="Add to Google Calendar" target="_blank"><i class="fa fa-calendar-plus-o"></i></a>
+          </div>
+          <div>
+            <span class="sport">{{event.sport}}</span>
+            <span class="event-info"><i class="fa fa-map-marker" ng-show="event.room"></i> {{event.room}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row footer">
+      <div class="col-xs-12"><small>Designed by <a href="http://mikewu.net">Mike Wu</a>. <br/> 
+      Event schedule provided by <a href="http://www.recreation.ubc.ca/drop-in/">UBC Recreation</a>. <br/>
+      Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">flaticon.com</a> and Dave Grandy from <a href="http://fontawesome.io">Font Awesome</a>.</small></div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-cookies.min.js"></script>
+  <script src="js/ui-bootstrap-tpls-0.14.3.min.js"></script>
+  <script src="js/moment.min.js"></script>
+  <script src="js/moment-duration-format.js"></script>
+  <script src="app/app.js"></script>
+  <script src="app/constant.js"></script>
+  <script src="app/filters.js"></script>
+  <script src="app/CalendarReader.js"></script>
+  <script src="app/ScheduleController.js"></script>
+</body>
+</html>
