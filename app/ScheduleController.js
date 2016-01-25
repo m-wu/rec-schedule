@@ -5,6 +5,8 @@
     ['$scope', '$http', '$cookies', 'CalendarReader', 'myConstant', 'sportFilter', scheduleController]);
 
   function scheduleController($scope, $http, $cookies, CalendarReader, myConstant, sportFilter) {    
+    $scope.sportFilter = sportFilter;
+
     CalendarReader(myConstant.swimCal, myConstant.SWIM).then(function(data){
       Array.prototype.push.apply($scope.events, data.data.items);
     });
@@ -23,8 +25,7 @@
 
     $scope.todayDay = moment().format('dddd');
     $scope.tomorrowDay = moment().add(1, 'd').format('dddd');
-
-    $scope.sportFilter = sportFilter;
+    
     $scope.selectedSport = $cookies.get('selectedSport');
     if ($scope.selectedSport == null){
       $scope.selectedSport = '';
