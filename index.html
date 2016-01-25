@@ -14,14 +14,14 @@
     <div class="row">
       <div class="col-xs-12">
         <h3 class="btn-group" role="toolbar">
-          <label class="btn btn-primary" ng-repeat="sport in sportFilter" ng-model="$parent.selectedSport" uib-btn-radio="sport.key"><img class="sport-filter" id="{{sport.key}}" src="img/{{sport.key}}.svg" ng-if="$index > 0"></img><div ng-if="$index==0">{{sport.label}}</div></label>
+          <label class="btn btn-primary ng-cloak" ng-repeat="sport in sportFilter" ng-model="$parent.selectedSport" uib-btn-radio="sport.key"><img class="sport-filter" id="{{sport.key}}" ng-src="img/{{sport.key}}.svg" ng-if="$index > 0"></img><div ng-if="$index==0">{{sport.label}}</div></label>
         </h3>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-6 col-xs-12">
-        <h3>Today <small>{{todayDay}}</small></h3>
-        <div class="event" ng-repeat="event in events | today | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
+        <h3>Today <small class="ng-cloak">{{todayDay}}</small></h3>
+        <div class="event ng-cloak" ng-repeat="event in events | today | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
           <div class="event-title">
             <span class="event-info" ng-hide="event.allday">{{event | eventStartTime}}</span>
             <span class="sport" ng-class="{'past-event':isPastEvent(event)}">{{event.sport}}</span>
@@ -35,8 +35,8 @@
             <i class="fa fa-clock-o"></i> {{event.duration}} <i class="fa fa-map-marker" ng-show="event.room"></i> {{event.room}}
           </div>
         </div>
-        <h3>Tomorrow <small>{{tomorrowDay}}</small></h3>
-        <div class="event" ng-repeat="event in events | tomorrow | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
+        <h3>Tomorrow <small class="ng-cloak">{{tomorrowDay}}</small></h3>
+        <div class="event ng-cloak" ng-repeat="event in events | tomorrow | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
           <div class="event-title">
             <span class="event-info" ng-hide="event.allday">{{event | eventStartTime}}</span>
             <span class="sport">{{event.sport}}</span>
@@ -49,7 +49,7 @@
       </div>
       <div class="col-sm-6 col-xs-12">
         <h3>Rest of the week</h3>
-        <div class="event" ng-repeat="event in events | future | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
+        <div class="event ng-cloak" ng-repeat="event in events | future | filter:{sport:selectedSport} | eventFilter | orderBy: 'start.dateTime' ">
           <div class="event-info">{{event | eventStartTime}} <i class="fa fa-clock-o"></i> {{event.duration}}
             <a ng-href="{{getCalEntryUrl(event)}}" title="Add to Google Calendar" target="_blank"><i class="fa fa-calendar-plus-o"></i></a>
           </div>
